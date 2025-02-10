@@ -1,20 +1,110 @@
 const screen = document.querySelector(".screen");
+
+let num1 = null;
+let operator = null;
+let num2 = null;
+let isInput = false;
+let didEval = false;
+
 const numKeys = document.querySelectorAll(".num");
 numKeys.forEach((key) => key.addEventListener("click", clickNum));
 
 function clickNum(e) {
-    if (screen.textContent.length >= 12) return;
-    if (screen.textContent == 0) screen.textContent = e.target.textContent;
-    else screen.textContent += e.target.textContent;
+    let counter = 0;
+    if (operator !== null && isInput === false) {
+        screen.textContent = e.target.textContent;
+        counter++;
+        isInput = true;
+    }
+    if (didEval === true) {
+        screen.textContent = e.target.textContent;
+        didEval = false;
+        counter++;
+    }
+    if (screen.textContent === "0") {
+        screen.textContent = e.target.textContent;
+        counter++;
+    }
+    if (counter === 0) screen.textContent += e.target.textContent;
 }
 
-const delKey = document.querySelector(".del");
-delKey.addEventListener("click", (e) => {
-    const arr = screen.textContent.split("");
-    arr.pop();
-    screen.textContent = arr.join("");
-    if (screen.textContent.length === 0) screen.textContent = 0;
-});
+const operatorKeys = document.querySelectorAll(".op");
+operatorKeys.forEach((key) => key.addEventListener("click", clickOperator));
+
+function clickOperator(e) {
+    if (num1 === null && isInput === false) {
+        num1 = Number(screen.textContent);
+        operator = e.target.textContent;
+    } else if (num1 !== null && isInput === false)
+        operator = e.target.textContent;
+    else if (isInput === true) {
+        num2 = Number(screen.textContent);
+        const evalBox = [num1, num2, operator];
+        doOperation(evalBox, e);
+        operator = e.target.textContent;
+    }
+}
+
+const equalkey = document.querySelector(".eq");
+equalkey.addEventListener("click", clickEqual);
+
+function clickEqual(e) {
+    if (isInput === true) {
+        num2 = Number(screen.textContent);
+        const evalBox = [num1, num2, operator];
+        doOperation(evalBox, e);
+    }
+}
 
 const acKey = document.querySelector(".ac");
-acKey.addEventListener("click", (e) => (screen.textContent = 0));
+acKey.addEventListener("click", (e) => {
+    screen.textContent = 0;
+    num1 = operator = num2 = null;
+    isInput = didEval = false;
+});
+
+function doOperation(evalBox, e) {
+    switch (evalBox[2]) {
+        case "÷":
+            divsion(evalBox, e);
+            break;
+        case "×":
+            product(evalBox, e);
+            break;
+        case "−":
+            tafrigh(evalBox, e);
+            break;
+        case "+":
+            sumation(evalBox, e);
+            break;
+    }
+}
+
+function divsion(evalBox, e) {
+    const evaluation = evalBox[0] / evalBox[1];
+    doChanges(evaluation, e);
+}
+function product(evalBox, e) {
+    const evaluation = evalBox[0] * evalBox[1];
+    doChanges(evaluation, e);
+}
+function tafrigh(evalBox, e) {
+    const evaluation = evalBox[0] - evalBox[1];
+    doChanges(evaluation, e);
+}
+function sumation(evalBox, e) {
+    const evaluation = evalBox[0] + evalBox[1];
+    doChanges(evaluation, e);
+}
+
+function doChanges(result, e) {
+    screen.textContent = result.toString();
+    num1 = result;
+    isInput = false;
+    if (e.target.textContent === "=") {
+        num1 = null;
+        operator = null;
+        num2 = null;
+        didEval = true;
+    } else num2 = null;
+}
