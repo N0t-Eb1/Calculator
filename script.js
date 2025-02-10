@@ -15,6 +15,8 @@ function clickNum(e) {
         screen.textContent = e.target.textContent;
         counter++;
         isInput = true;
+        selectedOperator.classList.remove("op-select");
+        selectedOperator.classList.add("hover");
     }
     if (didEval === true) {
         screen.textContent = e.target.textContent;
@@ -35,13 +37,31 @@ function clickOperator(e) {
     if (num1 === null && isInput === false) {
         num1 = Number(screen.textContent);
         operator = e.target.textContent;
-    } else if (num1 !== null && isInput === false)
+        doChangeOperatorColor(e);
+    } else if (num1 !== null && isInput === false) {
         operator = e.target.textContent;
-    else if (isInput === true) {
+        doChangeOperatorColor(e);
+    } else if (isInput === true) {
         num2 = Number(screen.textContent);
         const evalBox = [num1, num2, operator];
         doOperation(evalBox, e);
         operator = e.target.textContent;
+        doChangeOperatorColor(e);
+    }
+}
+
+function doChangeOperatorColor(e) {
+    if (selectedOperator === null) {
+        selectedOperator = e.target;
+        selectedOperator.classList.add("op-select");
+        selectedOperator.classList.remove("hover");
+    } else {
+        previousOperator = selectedOperator;
+        selectedOperator = e.target;
+        previousOperator.classList.remove("op-select");
+        previousOperator.classList.add("hover");
+        selectedOperator.classList.add("op-select");
+        selectedOperator.classList.remove("hover");
     }
 }
 
@@ -61,6 +81,8 @@ acKey.addEventListener("click", (e) => {
     screen.textContent = 0;
     num1 = operator = num2 = null;
     isInput = didEval = false;
+    selectedOperator.classList.remove("op-select");
+    selectedOperator.classList.add("hover");
 });
 
 function doOperation(evalBox, e) {
@@ -108,3 +130,8 @@ function doChanges(result, e) {
         didEval = true;
     } else num2 = null;
 }
+
+/* style changes */
+
+let selectedOperator = null;
+let previousOperator = null;

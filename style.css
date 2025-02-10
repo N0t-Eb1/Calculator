@@ -61,7 +61,7 @@ body {
     user-select: none;
 }
 
-.button:hover {
+.hover:hover {
     background-color: #353535;
     cursor: pointer;
     transition-duration: 0.15s;
@@ -78,4 +78,12 @@ body {
 .eq:hover {
     background-color: #8d5c00;
     transition-duration: 0.15s;
+}
+
+/* js toggles */
+
+.op-select {
+    background-color: #0808a5;
+    transition-duration: 0.15s;
+    cursor: pointer;
 }
