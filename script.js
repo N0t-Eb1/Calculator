@@ -23,7 +23,7 @@ function clickNum(e) {
         didEval = false;
         counter++;
     }
-    if (screen.textContent === "0") {
+    if (screen.textContent === "0" || screen.textContent === "Nuh Uh!") {
         screen.textContent = e.target.textContent;
         counter++;
     }
@@ -39,6 +39,7 @@ const operatorKeys = document.querySelectorAll(".op");
 operatorKeys.forEach((key) => key.addEventListener("click", clickOperator));
 
 function clickOperator(e) {
+    if (screen.textContent === "Nuh Uh!") return;
     if (num1 === null && isInput === false) {
         num1 = Number(screen.textContent);
         operator = e.target.textContent;
@@ -108,8 +109,16 @@ function doOperation(evalBox, e) {
 }
 
 function divsion(evalBox, e) {
-    const evaluation = evalBox[0] / evalBox[1];
-    doChanges(evaluation, e);
+    if (evalBox[1] === 0) {
+        screen.textContent = "Nuh Uh!";
+        num1 = operator = num2 = null;
+        isInput = didEval = false;
+        selectedOperator.classList.remove("op-select");
+        selectedOperator.classList.add("hover");
+    } else {
+        const evaluation = evalBox[0] / evalBox[1];
+        doChanges(evaluation, e);
+    }
 }
 function product(evalBox, e) {
     const evaluation = evalBox[0] * evalBox[1];
