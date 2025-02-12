@@ -62,6 +62,10 @@ body {
     transition-duration: 0.15s;
 }
 
+.del {
+    flex: 2;
+}
+
 .eq {
     background-color: #da8d00;
 }
