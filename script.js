@@ -41,10 +41,30 @@ const decimalKey = document.querySelector(".decimal");
 decimalKey.addEventListener("click", (e) => {
     if (
         screen.textContent.split("").find((item) => item === ".") ||
-        didCalculation === true
+        didCalculation === true ||
+        (operator !== null && isInput === false)
     )
         return;
     screen.textContent += ".";
+});
+
+const minusSignKey = document.querySelector(".minus-sign");
+minusSignKey.addEventListener("click", (e) => {
+    if (
+        didCalculation === true ||
+        (operator !== null && isInput === false) ||
+        screen.textContent === "0"
+    )
+        return;
+    if (!screen.textContent.split("").includes("-")) {
+        const arr = screen.textContent.split("");
+        arr.splice(0, 0, "-");
+        screen.textContent = arr.join("");
+    } else if (screen.textContent.split("").includes("-")) {
+        const arr = screen.textContent.split("");
+        arr.splice(0, 1);
+        screen.textContent = arr.join("");
+    }
 });
 
 const operatorKeys = document.querySelectorAll(".op");
@@ -172,11 +192,6 @@ function doChanges(result, e) {
         didEval = true;
     } else num2 = null;
     didCalculation = true;
-
-    console.log(num1);
-    console.log(num2);
-    console.log(operator);
-    console.log(delKey.classList);
 }
 
 /* style changes */
