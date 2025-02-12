@@ -5,11 +5,13 @@ let operator = null;
 let num2 = null;
 let isInput = false;
 let didEval = false;
+let didCalculation = false;
 
 const numKeys = document.querySelectorAll(".num");
 numKeys.forEach((key) => key.addEventListener("click", clickNum));
 
 function clickNum(e) {
+    didCalculation = false;
     let counter = 0;
     if (operator !== null && isInput === false) {
         screen.textContent = e.target.textContent;
@@ -37,8 +39,12 @@ function clickNum(e) {
 
 const decimalKey = document.querySelector(".decimal");
 decimalKey.addEventListener("click", (e) => {
-    if (screen.textContent.split("").find((item) => item === ".")) return;
-    else screen.textContent += ".";
+    if (
+        screen.textContent.split("").find((item) => item === ".") ||
+        didCalculation === true
+    )
+        return;
+    screen.textContent += ".";
 });
 
 const operatorKeys = document.querySelectorAll(".op");
@@ -92,9 +98,19 @@ const acKey = document.querySelector(".ac");
 acKey.addEventListener("click", (e) => {
     screen.textContent = 0;
     num1 = operator = num2 = null;
-    isInput = didEval = false;
+    isInput = didEval = didCalculation = false;
     selectedOperator.classList.remove("op-select");
     selectedOperator.classList.add("hover");
+});
+
+const delKey = document.querySelector(".del");
+delKey.addEventListener("click", (e) => {
+    if (didCalculation === true || (operator !== null && isInput === false))
+        return;
+    const arr = screen.textContent.split("");
+    arr.pop();
+    screen.textContent = arr.join("");
+    if (screen.textContent.length === 0) screen.textContent = "0";
 });
 
 function doOperation(evalBox, e) {
@@ -155,9 +171,12 @@ function doChanges(result, e) {
         num2 = null;
         didEval = true;
     } else num2 = null;
+    didCalculation = true;
+
     console.log(num1);
     console.log(num2);
     console.log(operator);
+    console.log(delKey.classList);
 }
 
 /* style changes */

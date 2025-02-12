@@ -62,10 +62,6 @@ body {
     transition-duration: 0.15s;
 }
 
-.del:hover {
-    cursor: not-allowed;
-}
-
 .eq {
     background-color: #da8d00;
 }
