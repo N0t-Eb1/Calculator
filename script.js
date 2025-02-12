@@ -35,6 +35,12 @@ function clickNum(e) {
     }
 }
 
+const decimalKey = document.querySelector(".decimal");
+decimalKey.addEventListener("click", (e) => {
+    if (screen.textContent.split("").find((item) => item === ".")) return;
+    else screen.textContent += ".";
+});
+
 const operatorKeys = document.querySelectorAll(".op");
 operatorKeys.forEach((key) => key.addEventListener("click", clickOperator));
 
@@ -134,6 +140,10 @@ function sumation(evalBox, e) {
 }
 
 function doChanges(result, e) {
+    if (!Number.isInteger(result)) {
+        const arr = result.toString().split(".");
+        if (arr[1].length >= 5) result = result.toFixed(5);
+    }
     if (result.toString().length >= 10) {
         screen.textContent = result.toExponential(4).toString();
     } else screen.textContent = result.toString();
