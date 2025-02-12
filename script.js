@@ -28,6 +28,11 @@ function clickNum(e) {
         counter++;
     }
     if (counter === 0) screen.textContent += e.target.textContent;
+    if (screen.textContent.length == 11) {
+        const arr = screen.textContent.split("");
+        arr.pop();
+        screen.textContent = arr.join("");
+    }
 }
 
 const operatorKeys = document.querySelectorAll(".op");
@@ -120,7 +125,9 @@ function sumation(evalBox, e) {
 }
 
 function doChanges(result, e) {
-    screen.textContent = result.toString();
+    if (result.toString().length >= 10) {
+        screen.textContent = result.toExponential(4).toString();
+    } else screen.textContent = result.toString();
     num1 = result;
     isInput = false;
     if (e.target.textContent === "=") {
@@ -129,6 +136,9 @@ function doChanges(result, e) {
         num2 = null;
         didEval = true;
     } else num2 = null;
+    console.log(num1);
+    console.log(num2);
+    console.log(operator);
 }
 
 /* style changes */
