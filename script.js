@@ -128,7 +128,8 @@ delKey.addEventListener("click", (e) => {
     if (didCalculation === true || (operator !== null && isInput === false))
         return;
     const arr = screen.textContent.split("");
-    arr.pop();
+    if (arr.length === 2 && arr[0] === "-") arr.splice(0, 2);
+    else arr.pop();
     screen.textContent = arr.join("");
     if (screen.textContent.length === 0) screen.textContent = "0";
 });
